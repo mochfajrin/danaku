@@ -55,7 +55,7 @@
             <div class="col-12">
                 <div class="card recent-sales overflow-auto">
                     <div class="card-body">
-                        <h5 class="card-title">Recent Sales</h5>
+                        <h5 class="card-title">Recent Transactions</h5>
                         <table class="table table-borderless datatable">
                             <thead>
                                 <tr>
