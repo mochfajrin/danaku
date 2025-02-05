@@ -18,7 +18,7 @@ class Wallet extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function getFormatedBalance()
+    public function getFormattedBalance()
     {
         return 'Rp ' . number_format($this->balance, 2, ',', '.');
     }

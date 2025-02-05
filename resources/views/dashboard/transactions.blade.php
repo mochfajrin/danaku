@@ -1,11 +1,48 @@
 <x-dashboard-layout title="Transaction">
-    <div class="my-4 w-full">
-        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#createForm">
-            <i class="bi bi-plus-circle mr-4"></i>
-            Add Transaction
-        </button>
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-octagon me-1"></i>
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+    <div class="my-4 w-full d-flex gap-2 align-items-center justify-content-between">
+        <div>
+            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#createForm">
+                <i class="bi bi-plus-circle mr-4"></i>
+                Add Transaction
+            </button>
+        </div>
+        <form action="{{ route('transaction') }}" method="get">
+            <div class="d-flex gap-3 align-items-center">
+                <div class="d-flex align-items-center gap-1">
+                    <i class="bi bi-filter" style="font-size: 1.2em"></i>
+                    <select class="form-select" aria-label="types" name="types">
+                        <option selected value="">All</option>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                    </select>
+                </div>
+                <div class="d-flex align-items-center gap-1">
+                    <i class="bi bi-calendar-date" style="font-size: 1.2em"></i>
+                    <input type="date" class="form-control" name="date">
+                </div>
+                <div class="d-flex align-items-center gap-1">
+                    <i class="bi {{ request('sort_date') == 'desc' ? 'bi-sort-up' : 'bi-sort-down' }}"
+                        style="font-size: 1.2em"></i>
+                    <select class="form-select" aria-label="types" name="sort_date">
+                        <option value="desc" selected>Newest</option>
+                        <option value="asc">Oldest</option>
+                    </select>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-sm btn-warning">Filter</button>
+                    <a href="{{ route('transaction') }}" class="btn btn-sm btn-danger">Clear</a>
+                </div>
+            </div>
+        </form>
     </div>
-    <div class="card">
+    <div class="card overflow-auto">
         <div class="card-body">
             <h5 class="card-title">Transaction History</h5>
             <table class="table">
@@ -22,7 +59,7 @@
                     @foreach ($transactions as $transaction)
                         <tr>
                             <th scope="row">{{ $transaction->id }}</th>
-                            <td>{{ $transaction->getFormatedAmount() }}</td>
+                            <td>{{ $transaction->getFormattedAmount() }}</td>
                             <td>
                                 <span
                                     class="badge rounded-pill {{ $transaction->types == 'income' ? 'bg-success' : 'bg-danger' }}">
@@ -30,13 +67,17 @@
                                 </span>
                             </td>
                             <td>{{ $transaction->description }}</td>
-                            <td>{{ $transaction->date }}</td>
+                            <td>{{ $transaction->getDate() }}</td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
+        <div class="px-3">
+            {{ $transactions->appends(request()->query())->links() }}
+        </div>
     </div>
+
     <div class="modal fade" id="createForm" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -92,3 +133,13 @@
         </div>
     </div>
 </x-dashboard-layout>
+<script>
+    document.querySelector("form").addEventListener("submit", function(event) {
+        let inputs = this.querySelectorAll("input, select, date");
+        inputs.forEach(input => {
+            if (!input.value.trim()) {
+                input.removeAttribute("name");
+            }
+        });
+    });
+</script>

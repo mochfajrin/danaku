@@ -13,7 +13,7 @@ return new class extends Migration {
     {
         Schema::create('wallets', function (Blueprint $table) {
             $table->id();
-            $table->decimal("balance");
+            $table->decimal("balance", 15, 2);
             $table->timestamps();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
         });

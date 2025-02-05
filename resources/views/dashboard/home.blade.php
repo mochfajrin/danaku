@@ -11,11 +11,10 @@
                                 <i class="bi bi-wallet"></i>
                             </div>
                             <div class="ps-3">
-                                <h6>{{ $balance }}</h6>
+                                <h6>{{ Auth::user()->wallet->getFormattedBalance() }}</h6>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div class="col-xxl-4 col-md-6">
@@ -29,7 +28,8 @@
                                 </div>
                             </a>
                             <div class="ps-3">
-                                <h6>Rp 40.000,00</h6>
+                                <h6>{{ $income }}
+                                </h6>
                             </div>
                         </div>
                     </div>
@@ -46,20 +46,16 @@
                                 </div>
                             </a>
                             <div class="ps-3">
-                                <h6>Rp. 100.000,00</h6>
+                                <h6>{{ $expense }}</h6>
                             </div>
                         </div>
                     </div>
                 </div>
-
-            </div><!-- End Customers Card -->
-
-            <!-- Recent Sales -->
+            </div>
             <div class="col-12">
                 <div class="card recent-sales overflow-auto">
                     <div class="card-body">
                         <h5 class="card-title">Recent Sales</h5>
-
                         <table class="table table-borderless datatable">
                             <thead>
                                 <tr>
@@ -70,21 +66,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row"><a href="#">#1</a></th>
-                                    <td>Rp. 100.000,00</td>
-                                    <td><a href="#" class="text-primary">Expense</a></td>
-                                    <td>15/12/2024</td>
-                                </tr>
+                                @foreach ($latestTransactions as $transaction)
+                                    <tr>
+                                        <th scope="row"><a href="#">#{{ $transaction->id }}</a></th>
+                                        <td>{{ $transaction->getFormattedAmount() }}</td>
+                                        <td><span
+                                                class="badge rounded-pill {{ $transaction->types == 'income' ? 'bg-success' : 'bg-danger' }}">
+                                                {{ $transaction->types }}
+                                            </span>
+                                        </td>
+                                        <td>{{ $transaction->getDate() }}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
-
                     </div>
-
                 </div>
-            </div><!-- End Recent Sales -->
-
-
+            </div>
         </div>
     </section>
 </x-dashboard-layout>
