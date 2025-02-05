@@ -44,3 +44,10 @@ npm run build
 ```sh
 php artisan serve
 ```
+
+### Login to seeder account
+
+```sh
+email: jhondoe@gmail.com
+password: 123456789
+```
