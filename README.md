@@ -33,6 +33,12 @@ php artisan migrate
 php artisan db:seed
 ```
 
+### Compile Bootstrap
+
+```sh
+npm run build
+```
+
 ### Run Development Server
 
 ```sh
