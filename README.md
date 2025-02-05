@@ -18,6 +18,10 @@ CREATE DATABASE <YOUR_DATABASE_NAME>;
 ### Configure .env file
 
 ```sh
+cp .env.example .env
+```
+
+```sh
 DB_CONNECTION=
 DB_HOST=
 DB_PORT=
